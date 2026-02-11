@@ -1,7 +1,7 @@
 
 <div align="center">
 
-# Step2Motion: Locomotion Reconstruction from Pressure Sensing Insoles <br> Eurographics 2026
+## Step2Motion: Locomotion Reconstruction from Pressure Sensing Insoles </br> Eurographics 2026
 
 [Jose Luis Ponton](https://joseluisponton.com/)<sup>1</sup>, [Eduardo Alvarado](https://edualvarado.com/)<sup>2</sup>, [Lin Geng Foo](https://lingeng.foo/)<sup>2</sup>, [Nuria Pelechano](https://www.cs.upc.edu/~npelechano)<sup>1</sup>, [Carlos Andujar](https://www.cs.upc.edu/~andujar)<sup>1</sup>, [Marc Habermann](https://people.mpi-inf.mpg.de/~mhaberma/)<sup>2</sup>
 
