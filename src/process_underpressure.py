@@ -52,7 +52,7 @@ def main(args: Namespace) -> None:
     test_files = [k for k in keys if "S4" in k or os.path.normpath(files[k][0]).split(os.sep)[-3] == "S4"]
     other_files = [k for k in keys if k not in test_files]
     random.shuffle(other_files)
-    num_train = int(len(other_files) * 0.8)
+    num_train = int(len(other_files) * 0.99)
     train_files = other_files[:num_train]
     val_files = other_files[num_train:]
     print(f"Number of files for - Train: {len(train_files)}, Val: {len(val_files)}, Test: {len(test_files)}")
