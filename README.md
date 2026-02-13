@@ -42,49 +42,60 @@ Step2Motion is a system for reconstructing full-body locomotion from multi-modal
 
 ---
 
-## Example Usage
+## Data
 
 - **Process UnderPressure data:**
+    Unzip the provided preprocessed UnderPressure data in the `data/UnderPressure/underpressure.zip` directory. If you want to process the raw BVH files yourself, you can use the src/process_underpressure.py script. Once unzipped, you should have a `data/UnderPressure/underpressure_test.pt` file with the processed data.
+
     ```bash
-    python .\src\process_underpressure.py underpressure ..\data\UnderPressure\
+
+- **Process Step2Motion data:**
+
+    - Download the dataset from ... TODO
+    - TODO...
+    
+    ```bash
+    py .\src\process_mpi.py mpi_dance ..\data\MPI\dancing\
+    py .\src\process_mpi.py mpi_dance ..\data\MPI\dancing\ --xsens
     ```
 
-- **Process MPI data (with optional Xsens retargeting):**
-    ```bash
-    python .\src\process_mpi.py mpi_dance ..\data\MPI\dancing\
-    python .\src\process_mpi.py mpi_dance ..\data\MPI\dancing\ --xsens
-    ```
+## Testing
 
-- **Process "in-the-wild" data:**
+- **Predicting a single motion clip:**
     ```bash
-    python .\src\process_insole_wild.py ..\evaluation\ling_geng_2024_12_11.txt .\skeletons\UPSkeleton_S1_AMASS.bvh
+    py .\src\test.py .\models\UnderPressure\ .\skeletons\UPSkeleton_S1_AMASS.bvh --dataset .\data\UnderPressure\underpressure_test.pt --clip 0
     ```
+    This will produce a 'models/UnderPressure/predictions/underpressure_test_c0_pred.bvh' file with the predicted motion. You can visualize it using any BVH viewer (e.g., Blender) or using the Unity Visualization tool described below.
 
-- **Train a model:**
+- **Predicting all test clips for a dataset:** 
     ```bash
-    python .\src\train_no_prior.py --config .\configs\config_no_prior.json
-    ```
-
-- **Test a model:**
-    ```bash
-    python .\src\test.py .\models\no_prior_UP .\skeletons\UPSkeleton_S4_AMASS.bvh --dataset ..\data\UnderPressureTest\S4\s4_test.pt --clip 0
+    py  .\src\test_model.py .\models\UnderPressure\ .\data\UnderPressure\underpressure_test.pt .\skeletons\UPSkeleton_S4_AMASS.bvh --only_test
     ```
 
 - **Visualize metrics:**
+    With this script you can compute the metrics reported in the paper, with additional distribution visualizations. By default it computes the metrics for the UnderPressure model, assuming that predictions have been executed with the previous text_model script.
+
     ```bash
-    python .\src\visualize_metrics.py
+    py .\src\visualize_metrics.py
     ```
 
----
+## Unity Visualization
 
-## Folder Structure
+ 1. Install Unity Hub and Unity Editor (tested on version 2022.3).
+ 2. Open the Unity project in `Unity/InsopleVisualization/`. 
+ 3. In the Unity Editor, open the scene `Assets/Scenes/Visualizer.unity`. 
+ 4. Take a look at the GlobalManager_UP game object in the scene, which contains the configuration for loading the predicted BVH files. It references a scriptable object "UnderPressure" that contains a field "ModelsPath". Modify this absolute path to your local path where the models are stored (e.g., "C:/Users/user/Desktop/Step2Motion/models/").
+ 5. If you have executed the test_model script from before, you can see the results by pressing play in the Unity Editor.
+ 6. You can modify the GlobalManager_UP script to visualize different motion clips, for example, UnderPressure has 21 test clips, so you can change the prediction name like "underpressure_test_c0" to "underpressure_test_c1", etc.
+ 7. The InsoleManager game object contains some visualizatio and playback options.
+ 8. Once in play mode, you can press "I" to toggle the insole visualization, "SPACE" to start/stop the motion playback, "G" to focus on the ground truth, "P" to focus on the prediction, "S" to have a scene view, "scroll" to zoom in/out, "RIGHT and LEFT arrows" to advance frame per frame, "UP and DOWN arrows" to increase/decrease the playback speed, and "R" to restart the motion.
 
-- `src/` — Main source code
-- `configs/` — Configuration files and normalizers
-- `models/` — Trained models
-- `skeletons/` — Skeleton files (BVH)
-- `Resources/` — Blender and other resources
-- `Unity/` — Unity integration (if applicable)
+## Training
+
+- **Train a model:**
+    ```bash
+    py .\src\train.py --config .\configs\config_underpressure.json
+    ```
 
 ---
 
@@ -108,6 +119,6 @@ If you use this project, please cite:
 
 ## License
 
-Released under the MIT License. See `LICENSE` for details.
+Code is released under the MIT License. See `LICENSE` for details.
 
 ---

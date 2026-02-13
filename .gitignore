@@ -1,6 +1,4 @@
 # Custom
-data/
-models/
 .vscode/
 configs/normalizer.pth
 displacement_error_figure.pdf
