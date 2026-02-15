@@ -63,17 +63,17 @@ Step2Motion is a system for reconstructing full-body locomotion from multi-modal
 
 - **Predicting a single motion clip:**
     ```bash
-    py .\src\test.py .\models\UnderPressure\ .\skeletons\UPSkeleton_S1_AMASS.bvh --dataset .\data\UnderPressure\underpressure_test.pt --clip 0
+    py .\src\test.py .\models\UnderPressure\ .\skeletons\UPSkeleton_S4_AMASS.bvh --dataset .\data\UnderPressure\underpressure_test.pt --clip 0
     ```
     This will produce a 'models/UnderPressure/predictions/underpressure_test_c0_pred.bvh' file with the predicted motion. You can visualize it using any BVH viewer (e.g., Blender) or using the Unity Visualization tool described below.
 
 - **Predicting all test clips for a dataset:** 
     ```bash
-    py  .\src\test_model.py .\models\UnderPressure\ .\data\UnderPressure\underpressure_test.pt .\skeletons\UPSkeleton_S4_AMASS.bvh --only_test
+    py .\src\test_model.py .\models\UnderPressure\ .\data\UnderPressure\underpressure_test.pt .\skeletons\UPSkeleton_S4_AMASS.bvh --only_test
     ```
 
 - **Visualize metrics:**
-    With this script you can compute the metrics reported in the paper, with additional distribution visualizations. By default it computes the metrics for the UnderPressure model, assuming that predictions have been executed with the previous text_model script.
+    With this script you can compute the metrics reported in the paper, with additional distribution visualizations. By default it computes the metrics for the UnderPressure model, assuming that predictions have been executed with the previous test_model script.
 
     ```bash
     py .\src\visualize_metrics.py
