@@ -1,4 +1,3 @@
-
 <div align="center">
 
 ## Step2Motion: Locomotion Reconstruction from Pressure Sensing Insoles </br> Eurographics 2026
@@ -45,9 +44,11 @@ Step2Motion is a system for reconstructing full-body locomotion from multi-modal
 ## Data
 
 - **Process UnderPressure data:**
-    Unzip the provided preprocessed UnderPressure data in the `data/UnderPressure/underpressure.zip` directory. If you want to process the raw BVH files yourself, you can use the src/process_underpressure.py script. Once unzipped, you should have a `data/UnderPressure/underpressure_test.pt` file with the processed data.
+    Unzip the provided preprocessed UnderPressure data in the `data/UnderPressure/underpressure.zip` directory. Once unzipped, you should have a `data/UnderPressure/underpressure_test.pt` file with the processed data. If you want to process the raw BVH files yourself, first download them from their [official repository](https://github.com/InterDigitalInc/UnderPressure), and then you can use the src/process_underpressure.py script. 
 
     ```bash
+    python .\src\process_underpressure.py underpressure ..\data\UnderPressure\
+    ```
 
 - **Process Step2Motion data:**
 
@@ -58,6 +59,9 @@ Step2Motion is a system for reconstructing full-body locomotion from multi-modal
     py .\src\process_mpi.py mpi_dance ..\data\MPI\dancing\
     py .\src\process_mpi.py mpi_dance ..\data\MPI\dancing\ --xsens
     ```
+    
+- **Dancing data:**
+    We provide the dance data in the `data/dancing/` directory. The dataset is also already processed.
 
 ## Testing
 
@@ -70,14 +74,18 @@ Step2Motion is a system for reconstructing full-body locomotion from multi-modal
 - **Predicting all test clips for a dataset:** 
     ```bash
     py .\src\test_model.py .\models\UnderPressure\ .\data\UnderPressure\underpressure_test.pt .\skeletons\UPSkeleton_S4_AMASS.bvh --only_test
+    py .\src\test_model.py .\models\dancing\ .\data\dancing\dance_test.pt .\skeletons\UPSkeleton_S1_AMASS.bvh --only_test
     ```
 
 - **Visualize metrics:**
-    With this script you can compute the metrics reported in the paper, with additional distribution visualizations. By default it computes the metrics for the UnderPressure model, assuming that predictions have been executed with the previous test_model script.
+    With this script you can compute the metrics reported in the paper, with additional distribution visualizations.
 
     ```bash
-    py .\src\visualize_metrics.py
+    py .\src\visualize_metrics.py [up|dance|ours]
     ```
+    - `up`: Visualizes metrics for the UnderPressure dataset.
+    - `dance`: Visualizes metrics for the dance dataset.
+    - `ours`: Visualizes metrics for the Step2Motion dataset.
 
 ## Unity Visualization
 

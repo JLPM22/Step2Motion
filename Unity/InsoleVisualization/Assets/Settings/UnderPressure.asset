@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9862255837565f244b67742491de18ef, type: 3}
+  m_Name: UnderPressure
+  m_EditorClassIdentifier: 
+  Name: Ours
+  FloorHeight: -0.921
+  ModelsPath: C:\Users\user\Desktop\MPI\InsoleToFullBody\models
+  ModelName: UnderPressure
+  Seeds: 
+  Color: {r: 0.11764706, g: 1, b: 0.9137255, a: 1}
+  LeftFoot: LeftFoot
+  LeftToes: LeftToeBase
+  RightFoot: RightFoot
+  RightToes: RightToeBase
+  LeftLocalPosition: {x: -0.052, y: -0.041, z: -0.114}
+  LeftLocalRotation: {x: -0.7736382, y: -0.02778463, z: -0.01684882, w: 0.6327938}
+  RightLocalPosition: {x: 0.083, y: -0.04, z: -0.112}
+  RightLocalRotation: {x: -0.7736382, y: -0.02778463, z: -0.01684882, w: 0.6327938}
