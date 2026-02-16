@@ -17,99 +17,136 @@
 
 ## Overview
 
-Step2Motion is a system for reconstructing full-body locomotion from multi-modal insole sensors (pressure + IMU). It enables robust motion capture in unconstrained, real-world environments, without the limitations of traditional mocap suits or optical systems.
+Step2Motion is a system for reconstructing full-body locomotion from multi-modal insole sensors (pressure + IMU). It enables robust motion capture in unconstrained, real-world environments, overcoming the limitations of traditional mocap suits or optical systems.
 
 ---
 
 ## Quick Start
 
-> **Requirements:**  
-> Python 3.9+  
-> PyTorch (see [installation guide](https://pytorch.org/get-started/locally/))
+### Requirements
+- **Python:** 3.9+
+- **PyTorch:** Follow the [official installation guide](https://pytorch.org/get-started/locally/) for your system.
+
+### Installation
 
 1. Clone this repository.
 2. Create and activate a virtual environment:
      ```bash
      python -m venv env
+     # On Windows:
      .\env\Scripts\activate
+     # On macOS/Linux:
+     # source env/bin/activate
      ```
 3. Install dependencies:
      ```bash
      pip install -r requirements.txt
      ```
-4. Install PyTorch as per your system configuration.
+4. Install PyTorch according to your compute platform.
 
 ---
 
-## Data
+## Data Preparation
 
-- **Process UnderPressure data:**
-    Unzip the provided preprocessed UnderPressure data in the `data/UnderPressure/underpressure.zip` directory. Once unzipped, you should have a `data/UnderPressure/underpressure_test.pt` file with the processed data. If you want to process the raw BVH files yourself, first download them from their [official repository](https://github.com/InterDigitalInc/UnderPressure), and then you can use the src/process_underpressure.py script. 
+### 1. UnderPressure Data
+Unzip the provided preprocessed UnderPressure data into the `data/UnderPressure` directory.  
+*Outcome:* You should have a `data/UnderPressure/underpressure_test.pt` file.
 
+To process raw BVH files manually (downloaded from the [official repository](https://github.com/InterDigitalInc/UnderPressure)):
+```bash
+python src/process_underpressure.py underpressure data/UnderPressure/
+```
+
+### 2. Step2Motion Data
+1. Download the [Step2Motion dataset](https://TODO).
+2. Unzip and place it in `data/step2motion/`. The structure should be:
+    ```
+    data/
+    └── step2motion/
+        ├── 00/
+        │   ├── clip.bvh
+        │   ├── clip.json
+        │   └── clip.txt
+        ├── ...
+    ```
+3. Run the processing script:
     ```bash
-    python .\src\process_underpressure.py underpressure ..\data\UnderPressure\
+    python src/process_step2motion.py step2motion data/step2motion/ --seed 14
     ```
 
-- **Process Step2Motion data:**
+### 3. Dancing Data
+The dance dataset is provided in the `data/dancing/` directory and is already preprocessed.
 
-    - Download the dataset from ... TODO
-    - TODO...
-    
-    ```bash
-    py .\src\process_mpi.py mpi_dance ..\data\MPI\dancing\
-    py .\src\process_mpi.py mpi_dance ..\data\MPI\dancing\ --xsens
-    ```
-    
-- **Dancing data:**
-    We provide the dance data in the `data/dancing/` directory. The dataset is also already processed.
+---
 
-## Testing
+## Testing & Evaluation
 
-- **Predicting a single motion clip:**
-    ```bash
-    py .\src\test.py .\models\UnderPressure\ .\skeletons\UPSkeleton_S4_AMASS.bvh --dataset .\data\UnderPressure\underpressure_test.pt --clip 0
-    ```
-    This will produce a 'models/UnderPressure/predictions/underpressure_test_c0_pred.bvh' file with the predicted motion. You can visualize it using any BVH viewer (e.g., Blender) or using the Unity Visualization tool described below.
+### Predict a Single Motion Clip
+Generate a prediction for a specific clip:
+```bash
+python src/test.py models/UnderPressure/ skeletons/UPSkeleton_S4_AMASS.bvh --dataset data/UnderPressure/underpressure_test.pt --clip 0
+```
+*Output:* `models/UnderPressure/predictions/underpressure_test_c0_pred.bvh`. This file can be viewed in Blender or the Unity Visualizer.
 
-- **Predicting all test clips for a dataset:** 
-    ```bash
-    py .\src\test_model.py .\models\UnderPressure\ .\data\UnderPressure\underpressure_test.pt .\skeletons\UPSkeleton_S4_AMASS.bvh --only_test
-    py .\src\test_model.py .\models\dancing\ .\data\dancing\dance_test.pt .\skeletons\UPSkeleton_S1_AMASS.bvh --only_test
-    ```
+### Predict All Test Clips
+Generate predictions for an entire dataset:
+```bash
+# UnderPressure
+python src/test_model.py models/UnderPressure/ data/UnderPressure/underpressure_test.pt skeletons/UPSkeleton_S4_AMASS.bvh --only_test
 
-- **Visualize metrics:**
-    With this script you can compute the metrics reported in the paper, with additional distribution visualizations.
+# Dancing
+python src/test_model.py models/dancing/ data/dancing/dance_test.pt skeletons/UPSkeleton_S1_AMASS.bvh --only_test
 
-    ```bash
-    py .\src\visualize_metrics.py [up|dance|ours]
-    ```
-    - `up`: Visualizes metrics for the UnderPressure dataset.
-    - `dance`: Visualizes metrics for the dance dataset.
-    - `ours`: Visualizes metrics for the Step2Motion dataset.
+# Step2Motion
+python src/test_model.py models/step2motion/ data/step2motion/step2motion_test.pt skeletons/step2motion.bvh --only_test
+```
+
+### Metrics & Visualization
+Compute metrics and generate distribution plots reported in the paper. Choose the target dataset using the argument: `up` (UnderPressure), `dance`, or `step2motion`.
+
+```bash
+python src/visualize_metrics.py [up|dance|step2motion]
+```
+
+---
 
 ## Unity Visualization
 
- 1. Install Unity Hub and Unity Editor (tested on version 2022.3).
- 2. Open the Unity project in `Unity/InsopleVisualization/`. 
- 3. In the Unity Editor, open the scene `Assets/Scenes/Visualizer.unity`. 
- 4. Take a look at the GlobalManager_UP game object in the scene, which contains the configuration for loading the predicted BVH files. It references a scriptable object "UnderPressure" that contains a field "ModelsPath". Modify this absolute path to your local path where the models are stored (e.g., "C:/Users/user/Desktop/Step2Motion/models/").
- 5. If you have executed the test_model script from before, you can see the results by pressing play in the Unity Editor.
- 6. You can modify the GlobalManager_UP script to visualize different motion clips, for example, UnderPressure has 21 test clips, so you can change the prediction name like "underpressure_test_c0" to "underpressure_test_c1", etc.
- 7. The InsoleManager game object contains some visualizatio and playback options.
- 8. Once in play mode, you can press "I" to toggle the insole visualization, "SPACE" to start/stop the motion playback, "G" to focus on the ground truth, "P" to focus on the prediction, "S" to have a scene view, "scroll" to zoom in/out, "RIGHT and LEFT arrows" to advance frame per frame, "UP and DOWN arrows" to increase/decrease the playback speed, and "R" to restart the motion.
+1. **Setup:** Install Unity Hub and the Unity Editor (tested on version 2022.3).
+2. **Open Project:** Open `Unity/InsoleVisualization/`.
+3. **Load Scene:** Open `Assets/Scenes/Visualizer.unity`.
+4. **Configuration:**
+   - Select the `GlobalManager_UP` GameObject.
+   - Locate the referenced `UnderPressure` ScriptableObject.
+   - Update the **"ModelsPath"** field to the absolute path of your local models directory (e.g., `C:/Users/user/Desktop/Step2Motion/models/`).
+5. **Playback:**
+   - Press **Play** in the Editor.
+   - To change clips, modify the prediction name (e.g., `underpressure_test_c0`) in the `GlobalManager_UP` script.
+6. **Controls:**
+   - `SPACE`: Play/Pause
+   - `R`: Restart motion
+   - `G`: Focus on Ground Truth
+   - `P`: Focus on Prediction
+   - `S`: Scene View camera
+   - `I`: Toggle Insole visualization
+   - `Scroll`: Zoom
+   - `← / →`: Previous/Next frame
+   - `↑ / ↓`: Increase/Decrease playback speed
+
+---
 
 ## Training
 
-- **Train a model:**
-    ```bash
-    py .\src\train.py --config .\configs\config_underpressure.json
-    ```
+To train a new model from scratch:
+```bash
+python src/train.py --config configs/config_underpressure.json
+```
 
 ---
 
 ## Citation
 
-If you use this project, please cite:
+If you use this project in your research, please cite:
 
 ```bibtex
 @misc{ponton2025step2motion,
@@ -127,6 +164,4 @@ If you use this project, please cite:
 
 ## License
 
-Code is released under the MIT License. See `LICENSE` for details.
-
----
+This code is released under the [MIT License](LICENSE).
