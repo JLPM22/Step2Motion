@@ -128,7 +128,7 @@ def main(
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
     normalizer: Normalizer = torch.load(
-        f"./configs/normalizer_{config['normalizer']}.pth", weights_only=False
+        f"./configs/normalizer_{config['normalizer']}.pth", weights_only=False, map_location=device
     )
     normalizer.to(device)
 
@@ -151,13 +151,13 @@ def main(
     trans_name = "model_trans.pth"
 
     if bw_prior_name is not None:
-        bw_diff_pose_prior.load_state_dict(torch.load(os.path.join(config["model_dir"], bw_prior_name)))
+        bw_diff_pose_prior.load_state_dict(torch.load(os.path.join(config["model_dir"], bw_prior_name), map_location=device))
         assert bw_diff_pose_prior.normalizer_id.item() == normalizer.id
     if bw_name is not None and bw_diff_pose is not None:
-        bw_diff_pose.load_state_dict(torch.load(os.path.join(config["model_dir"], bw_name)))
+        bw_diff_pose.load_state_dict(torch.load(os.path.join(config["model_dir"], bw_name), map_location=device))
         assert bw_diff_pose.normalizer_id.item() == normalizer.id
     if trans_name is not None and model_trans is not None:
-        model_trans.load_state_dict(torch.load(os.path.join(config["model_dir"], trans_name)))
+        model_trans.load_state_dict(torch.load(os.path.join(config["model_dir"], trans_name), map_location=device))
         assert model_trans.normalizer_id.item() == normalizer.id
 
     print("Setting up datasets -----------------")
