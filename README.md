@@ -7,7 +7,7 @@
 <sup>1</sup> [Universitat Politècnica de Catalunya (UPC)](https://www.upc.edu/en)  
 <sup>2</sup> [Max Planck Institute for Informatics](https://www.mpi-inf.mpg.de/)
 
-[**Project page**](https://vcai.mpi-inf.mpg.de/projects/Step2Motion/) | [**Paper (arXiv)**](https://arxiv.org/abs/2510.22712) | [**Video**](#) | [**Data**](#)
+[**Project page**](https://vcai.mpi-inf.mpg.de/projects/Step2Motion/) | [**Paper (arXiv)**](https://arxiv.org/abs/2510.22712) | [**Video**](https://youtu.be/IPpb-YNyiSw?si=88HUgb_eihn2zfwl) | [**Data**](https://gvv-assets.mpi-inf.mpg.de/step2motion/)
 
 <img src="docs/teaser.jpg" alt="Step2Motion teaser" style="max-width: 100%;"/>
 
@@ -58,7 +58,7 @@ python src/process_underpressure.py underpressure data/UnderPressure/
 ```
 
 ### 2. Step2Motion Data
-1. Download the [Step2Motion dataset](https://TODO).
+1. Download the [Step2Motion dataset](https://gvv-assets.mpi-inf.mpg.de/step2motion/).
 2. Unzip and place it in `data/step2motion/`. The structure should be:
     ```
     data/
@@ -149,14 +149,15 @@ python src/train.py --config configs/config_underpressure.json
 If you use this project in your research, please cite:
 
 ```bibtex
-@misc{ponton2025step2motion,
-            title={Step2Motion: Locomotion Reconstruction from Pressure Sensing Insoles}, 
-            author={Jose Luis Ponton and Eduardo Alvarado and Lin Geng Foo and Nuria Pelechano and Carlos Andujar and Marc Habermann},
-            year={2025},
-            eprint={2510.22712},
-            archivePrefix={arXiv},
-            primaryClass={cs.GR},
-            url={https://arxiv.org/abs/2510.22712}, 
+@article{2026:ponton:step2motion,
+  author = {Ponton, Jose Luis and Alvarado, Eduardo and Foo, Lin Geng and Pelechano, Nuria and Andujar, Carlos and Habermann, Marc},
+  title = {Step2Motion: Locomotion Reconstruction from Pressure Sensing Insoles},
+  journal = {Computer Graphics Forum},
+  booktitle = {Eurographics 2026},
+  volume = {45},
+  number = {2},
+  year = {2026},
+  doi = {10.1111/cgf.70405},
 }
 ```
 
